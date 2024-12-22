@@ -17,7 +17,7 @@ set "VDD_ZIP_PATH=%INSTALL_PATH%\vdd.zip"
 set "VDD_EXTRACT_PATH=%INSTALL_PATH%\IddSampleDriver"
 set "TARGET_PATH=C:\IddSampleDriver"
 set "CHOCOLATEY_INSTALL_SCRIPT=https://community.chocolatey.org/install.ps1"
-set "VDD_DOWNLOAD_URL=https://github.com/itsmikethetech/Virtual-Display-Driver/releases/download/23.10.20.2/VDD.23.10.20.2.zip"
+set "VDD_DOWNLOAD_URL=https://github.com/themimi974/Virtual-Display-Driver/releases/download/v1.0.0/VDD.23.10.20.3.zip"
 set "SRM_DOWNLOAD_PATH=https://github.com/themimi974/Qres_GUI/archive/refs/heads/main.zip"
 set "SRM_ZIP_PATH=C:\srm.zip"
 
