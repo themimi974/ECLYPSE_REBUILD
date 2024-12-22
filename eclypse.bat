@@ -2,25 +2,11 @@
 REM Sunshine Configuration Script: Combined Actions
 REM This script combines actions from sunshine_config_openport_allow_all.bat, sunshine_setup_webhook_messages.bat, and test8.bat
 
-REM Section 1: Configuration to Allow All Ports
 
-echo Configuring Sunshine to allow all ports...
-REM Content from sunshine_config_openport_allow_all.bat
-netsh advfirewall firewall add rule name="Open All Ports" dir=in action=allow protocol=TCP localport=1-65535
-netsh advfirewall firewall add rule name="Open All Ports" dir=out action=allow protocol=TCP localport=1-65535
-
-echo Ports configuration completed.
-
-REM Section 2: Setting up Webhook Messages
-
-echo Setting up Sunshine webhook messages...
-REM Content from sunshine_setup_webhook_messages.bat
-echo {"webhook":"example-webhook-url","events":"all"} > webhook_config.json
-curl -X POST -H "Content-Type: application/json" -d @webhook_config.json http://localhost:5000/webhooks/setup
 
 echo Webhook setup completed.
 
-REM Section 3: Test 8 Actions
+REM Section 1: Test 8 Actions
 
 echo Executing test actions...
 REM Content from test8.bat
@@ -153,6 +139,22 @@ echo Cleaning up temporary files...
 rd /s /q "%INSTALL_PATH%"
 rd /s /q "%VDD_EXTRACT_PATH%"
 del /q "%SRM_ZIP_PATH%"
+
+REM Section 2: Configuration to Allow All Ports
+
+echo Configuring Sunshine to allow all ports...
+REM Content from sunshine_config_openport_allow_all.bat
+netsh advfirewall firewall add rule name="Open All Ports" dir=in action=allow protocol=TCP localport=1-65535
+netsh advfirewall firewall add rule name="Open All Ports" dir=out action=allow protocol=TCP localport=1-65535
+
+echo Ports configuration completed.
+
+REM Section 3: Setting up Webhook Messages
+
+echo Setting up Sunshine webhook messages...
+REM Content from sunshine_setup_webhook_messages.bat
+echo {"webhook":"example-webhook-url","events":"all"} > webhook_config.json
+curl -X POST -H "Content-Type: application/json" -d @webhook_config.json http://localhost:5000/webhooks/setup
 
 :: Script terminé
 echo Installation and cleanup completed.
