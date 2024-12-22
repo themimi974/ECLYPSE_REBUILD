@@ -119,6 +119,7 @@ set "STARTUP_SCRIPT=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\P
     echo @echo off
     echo pip install tk
     echo pip install screeninfo
+    echo pip install customtkinter
     echo pip install pystray
     echo cd C:\Qres_GUI-main
     echo python C:\Qres_GUI-main\shortcut.py
