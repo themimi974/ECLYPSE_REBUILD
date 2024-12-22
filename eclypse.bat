@@ -17,7 +17,7 @@ set "VDD_ZIP_PATH=%INSTALL_PATH%\vdd.zip"
 set "VDD_EXTRACT_PATH=%INSTALL_PATH%\VDD.23.10.20.2\IddSampleDriver"
 set "TARGET_PATH=C:\IddSampleDriver"
 set "CHOCOLATEY_INSTALL_SCRIPT=https://community.chocolatey.org/install.ps1"
-set "VDD_DOWNLOAD_URL=https://github.com/themimi974/Virtual-Display-Driver/releases/download/v1.0.0/VDD.23.10.20.3.zip"
+set "VDD_DOWNLOAD_URL=https://github.com/themimi974/Virtual-Display-Driver/releases/download/v1.0.1/VDD.23.10.20.3.zip"
 set "SRM_DOWNLOAD_PATH=https://github.com/themimi974/Qres_GUI/archive/refs/heads/main.zip"
 set "SRM_ZIP_PATH=C:\srm.zip"
 
@@ -91,7 +91,6 @@ if exist "%TARGET_PATH%\option.txt" (
 
 :: Installer le driver de l'écran virtuel
 echo Press Enter to install virtual screen...
-pause
 call "%VDD_EXTRACT_PATH%\installCert.bat"
 devcon64 install "%VDD_EXTRACT_PATH%\iddsampledriver.inf" root\iddsampledriver
 
